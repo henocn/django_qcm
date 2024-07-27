@@ -1,0 +1,20 @@
+
+{% extends 'base.html' %}
+
+{% block main %}
+    <h1 class="text-success my-4 text-center font-monospace fw-bolder">{{ appr }} {{note}}/20</h1>
+    {% if QCM %}
+        <h3 class="text-center">Correction des questions ratées</h3>
+        <div class="align-content-center">
+            {% for qcm in QCM %}
+                <div class="fst-italic my-5">
+                    <h4 class="fw-bold text-danger">Question</h4>
+                    <h5>{{ qcm.question }}</h5>
+                    <h5><b class="text-success">Réponse</b> : {{ qcm.reponse.0 }}</h5>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h3 class="text-success text-center">Félicitation vous avez trouvé toutes les réponses !!!</h3>
+    {% endif %}
+{% endblock %}

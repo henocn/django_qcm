@@ -1,0 +1,65 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="qcm-group" data-index="0">
+        <form action="correction/" method="post">
+            {% csrf_token %}
+            {% for qcm in QCM %}
+                <div class="qcm-item mt-5">
+                    <h4 class="fw-bold">Question {{ forloop.counter }}</h4>
+                    <h4>{{ qcm.question }}</h4>
+                    <ol type="A">
+                    {% for proposition in qcm.generate %}
+                        <li><input type="radio" name="{{ qcm.id }}" value="{{ proposition }}" required> {{ proposition }}</li>
+                    {% endfor %}
+
+                    </ol>
+                </div>
+                {% if forloop.counter|divisibleby:2 %}
+                    {% if not forloop.last %}
+                        </div>
+                        <div class="qcm-group" data-index="{{ forloop.counter }}">
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-outline-success d-inline">Envoyer les réponses</button>
+        </form>
+    </div>
+    <button class="btn btn-primary" id="prevBtn" onclick="prevQCM()"><<</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="nextQCM()">>></button>
+
+
+    <script>
+        const qcmGroups = document.querySelectorAll('.qcm-group');
+        let currentIndex = 0;
+
+        function showCurrentQCM() {
+            qcmGroups.forEach((group, index) => {
+                if (index === currentIndex) {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        }
+
+        function prevQCM() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showCurrentQCM();
+            }
+        }
+
+        function nextQCM() {
+            if (currentIndex < qcmGroups.length - 1) {
+                currentIndex++;
+                showCurrentQCM();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showCurrentQCM();
+        });
+    </script>
+{% endblock %}

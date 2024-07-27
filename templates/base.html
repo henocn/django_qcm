@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page d'accueil</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/bootstrap.css' %}">
+    <style>
+        .qcm-group {
+            display: none;
+        }
+    </style>
+</head>
+<body class="fs-4 bg-info bg-opacity-10">
+    <div class="container-fluid">
+        <div class="container">
+            {% block main %}
+                <h3 style="color: red">SITE DE QCM EN PYTHON (DJANGO)</h3>
+                <form action="/" method="post">
+                    {% csrf_token %}
+                    <select name="branche" class="form-control d-inline w-25 fs-5" id="">
+                        <option value="toutes">Toutes</option>
+                        {% for branche in branches %}
+                            {% if branche.nom == QCM.0.branche.nom %}
+                                <option value="{{ branche.nom }}" selected>{{ branche.nom }}</option>
+                            {% else %}
+                                <option value="{{ branche.nom }}">{{ branche.nom }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-outline-success">Faire une demande de QCM</button>
+                </form>
+                {% block content %}{% endblock %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
